@@ -1,5 +1,6 @@
 package org.benetech.security.client.digest;
 
+import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
 import org.apache.commons.logging.Log;
@@ -41,19 +42,17 @@ public class DigestRestTemplateFactory {
 
 
   public static RestTemplate getRestTemplate(String hostname, int port, String scheme,
-      String realmName, String username, String password, HttpHost proxy, boolean useAwsFilter) {
+      String realmName, String username, String password, InetSocketAddress proxy, boolean useAwsFilter) {
     HttpHost host = new HttpHost(hostname, port, scheme);
 
 
     HttpClientBuilder clientBuilder = HttpClientBuilder.create()
         .setDefaultCredentialsProvider(provider(username, password)).useSystemProperties();
 
-    if (proxy != null) {
-      clientBuilder.setProxy(proxy);
-    }
+
     CloseableHttpClient client = clientBuilder.build();
     HttpComponentsClientHttpRequestFactoryDigestAuth requestFactory =
-        new HttpComponentsClientHttpRequestFactoryDigestAuth();
+        new HttpComponentsClientHttpRequestFactoryDigestAuth(proxy);
     requestFactory.setHttpClient(client);
     requestFactory.setHost(host);
     requestFactory.setRealmName(realmName);

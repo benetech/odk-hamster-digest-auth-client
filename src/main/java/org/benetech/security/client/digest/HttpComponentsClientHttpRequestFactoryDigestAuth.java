@@ -1,5 +1,6 @@
 package org.benetech.security.client.digest;
 
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.Random;
 
@@ -31,13 +32,16 @@ public class HttpComponentsClientHttpRequestFactoryDigestAuth
 
   HttpHost host;
   String realmName;
+  InetSocketAddress proxyAddress;
 
-  public HttpComponentsClientHttpRequestFactoryDigestAuth() {
+  public HttpComponentsClientHttpRequestFactoryDigestAuth(InetSocketAddress proxyAddress) {
     super();
+    this.proxyAddress = proxyAddress;
   }
 
   @Override
   protected HttpContext createHttpContext(HttpMethod httpMethod, URI uri) {
+
     return createHttpContext();
   }
 
@@ -62,6 +66,11 @@ public class HttpComponentsClientHttpRequestFactoryDigestAuth
     // Add AuthCache to the execution context
     BasicHttpContext localcontext = new BasicHttpContext();
     localcontext.setAttribute(ClientContext.AUTH_CACHE, authCache);
+    
+    // Proxy for debugging
+    if (proxyAddress != null) {
+      localcontext.setAttribute("socks.address", proxyAddress);
+    }
     return localcontext;
   }
 
