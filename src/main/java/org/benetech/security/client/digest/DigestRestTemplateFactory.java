@@ -2,8 +2,6 @@ package org.benetech.security.client.digest;
 
 import java.nio.charset.Charset;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -12,7 +10,6 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.benetech.client.interceptor.AWSHeaderInterceptor;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -28,9 +25,6 @@ import org.springframework.web.client.RestTemplate;
  */
 public class DigestRestTemplateFactory {
 
-  private static Log logger = LogFactory.getLog(DigestRestTemplateFactory.class);
-
-  
 	public static RestTemplate getRestTemplate(String hostname, int port, String scheme, String realmName,
 			String username, String password) {
 		HttpHost host = new HttpHost(hostname, port, scheme);
@@ -47,11 +41,7 @@ public class DigestRestTemplateFactory {
 		formConverter.setCharset(Charset.forName("UTF8"));
 		restTemplate.getMessageConverters().add(formConverter);
 		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-		restTemplate.getInterceptors().add(0, new AWSHeaderInterceptor());
-		
-		for (ClientHttpRequestInterceptor interceptor: restTemplate.getInterceptors()) {
-		  logger.info("interceptor " + interceptor.getClass().toString());
-		}
+		restTemplate.getInterceptors().add(new AWSHeaderInterceptor());
 
 		return restTemplate;
 	}
