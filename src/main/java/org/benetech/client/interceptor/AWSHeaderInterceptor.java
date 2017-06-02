@@ -40,9 +40,6 @@ public class AWSHeaderInterceptor implements ClientHttpRequestInterceptor {
       ClientHttpRequestExecution execution) throws IOException {
     ClientHttpResponse response = execution.execute(request, body);
     HttpHeaders headers = response.getHeaders();
-    
-    // Avoid java.util.ConcurrentModificationException
-    HttpHeaders newHeaders = new HttpHeaders();
     for (String header : headers.keySet()) {
       if (headerMap.get(header.toLowerCase()) != null) {
   
@@ -50,13 +47,9 @@ public class AWSHeaderInterceptor implements ClientHttpRequestInterceptor {
         if (logger.isDebugEnabled()) {
           logger.debug("Found header " + header + ": " + oldValues.toString());
         }
-        newHeaders.put(HttpHeaders.WWW_AUTHENTICATE, oldValues);
+        response.getHeaders().put(HttpHeaders.WWW_AUTHENTICATE, oldValues);
       }
     }
-    for (String newHeader : newHeaders.keySet()) {
-      response.getHeaders().put(newHeader, newHeaders.get(newHeader));
-    }
-
     return response;
   }
 
