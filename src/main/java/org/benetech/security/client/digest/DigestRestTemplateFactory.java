@@ -39,13 +39,13 @@ public class DigestRestTemplateFactory {
 		requestFactory.setHost(host);
 		requestFactory.setRealmName(realmName);
 	    logger.info("Setting buffer request body false");
-
 		requestFactory.setBufferRequestBody(false);
+		
 		RestTemplate restTemplate = new RestTemplate(requestFactory);
 
 		// Add converters for multi-part form submission
 		FormHttpMessageConverter formConverter = new FormHttpMessageConverter();
-		formConverter.setCharset(Charset.forName("UTF8"));
+		formConverter.setCharset(Charset.forName("UTF-8"));
 		restTemplate.getMessageConverters().add(formConverter);
 		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
