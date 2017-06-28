@@ -2,6 +2,8 @@ package org.benetech.security.client.digest;
 
 import java.nio.charset.Charset;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -24,6 +26,9 @@ import org.springframework.web.client.RestTemplate;
  */
 public class DigestRestTemplateFactory {
 
+  private static Log logger =
+      LogFactory.getLog(DigestRestTemplateFactory.class);
+  
 	public static RestTemplate getRestTemplate(String hostname, int port, String scheme, String realmName,
 			String username, String password) {
 		HttpHost host = new HttpHost(hostname, port, scheme);
@@ -33,6 +38,8 @@ public class DigestRestTemplateFactory {
 		requestFactory.setHttpClient(client);
 		requestFactory.setHost(host);
 		requestFactory.setRealmName(realmName);
+	    logger.info("Setting buffer request body false");
+
 		requestFactory.setBufferRequestBody(false);
 		RestTemplate restTemplate = new RestTemplate(requestFactory);
 

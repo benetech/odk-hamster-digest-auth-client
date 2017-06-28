@@ -65,6 +65,7 @@ public class HttpComponentsClientHttpRequestFactoryDigestAuth
     BasicHttpContext localcontext = new BasicHttpContext();
     localcontext.setAttribute(HttpClientContext.AUTH_CACHE, authCache);
     
+    logger.info("Setting request config to expect continue enabled");
     RequestConfig config = RequestConfig.custom()
         .setExpectContinueEnabled(true)
         .build();
