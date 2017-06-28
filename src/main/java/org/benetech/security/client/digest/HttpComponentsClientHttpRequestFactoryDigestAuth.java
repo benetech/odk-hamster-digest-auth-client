@@ -7,7 +7,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpHost;
 import org.apache.http.client.AuthCache;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.auth.DigestScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.protocol.BasicHttpContext;
@@ -61,7 +63,14 @@ public class HttpComponentsClientHttpRequestFactoryDigestAuth
 
     // Add AuthCache to the execution context
     BasicHttpContext localcontext = new BasicHttpContext();
-    localcontext.setAttribute(ClientContext.AUTH_CACHE, authCache);
+    localcontext.setAttribute(HttpClientContext.AUTH_CACHE, authCache);
+    
+    RequestConfig config = RequestConfig.custom()
+        .setExpectContinueEnabled(true)
+        .build();
+    localcontext.setAttribute(HttpClientContext.REQUEST_CONFIG, config);
+
+    
     return localcontext;
   }
 
