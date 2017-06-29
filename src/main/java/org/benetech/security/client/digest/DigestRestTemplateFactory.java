@@ -33,7 +33,6 @@ public class DigestRestTemplateFactory {
 		requestFactory.setHttpClient(client);
 		requestFactory.setHost(host);
 		requestFactory.setRealmName(realmName);
-		requestFactory.setBufferRequestBody(false);
 		RestTemplate restTemplate = new RestTemplate(requestFactory);
 
 		// Add converters for multi-part form submission

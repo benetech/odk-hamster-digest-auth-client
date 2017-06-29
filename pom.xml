@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.benetech</groupId>
     <artifactId>odk-hamster-digest-auth-client</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.2-RELEASE</version>
     <name>Digest Authentication Client Helpers for ODK Hamster</name>
     <url>http://benetech.org/</url>
     <organization>
